@@ -2,7 +2,7 @@ import redis
 import requests
 from PIL import Image
 from io import BytesIO
-from app.src.initial import CV_MODEL, Milvus_Client_VectorDB
+from app.src.initial import CV_MODEL, VectorDB
 import numpy as np 
 import logging
 import json
@@ -75,7 +75,8 @@ def sub_main():
             print(file_ext)
             logging.info(f"处理图片: {product_id}, 格式: {file_ext}")
             vector = subscribe_image(image_url, save_dir)
-            Milvus_Client_VectorDB.insert_db([{"id": start_id, "vector": vector, "product_id": product_id}])
+            with VectorDB() as vector_db:
+                vector_db.insert_db([{"id": start_id, "vector": vector, "product_id": product_id}])
             print(f"✅ 成功处理图片: {product_id}, 格式: {file_ext}")
             start_id += 1
                 

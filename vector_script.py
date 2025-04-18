@@ -1,7 +1,7 @@
 import os
 import numpy as np
 from PIL import Image
-from app.src.initial import env, CV_MODEL, Milvus_Client_VectorDB
+from app.src.initial import env, CV_MODEL, VectorDB
 from app.src.third_api.pcc_images import check_and_create_directory, get_pcc_images, write_to_directory
 
 
@@ -24,7 +24,6 @@ def prepare_vector_db():
     prepare vector db
     :return:
     """
-    all_data = []
     for _id, name in enumerate(os.listdir(env.model.PCC_IMAGE_DIR)):
         if (_id + 1) % 10 == 0:
             print(_id+1)
@@ -34,21 +33,22 @@ def prepare_vector_db():
         image = Image.open(image_path)
         image_np = np.array(image)
         features = CV_MODEL.predict(image_np)
-        product_id = name.split(".")[0]
-        all_data.append({
+        product_id = name.split("_")[0]
+        
+        with VectorDB() as vector_db:
+            vector_db.insert_db([{
             "id": _id,
             "product_id": product_id,
             "vector": features
-        })
-        
-
-    Milvus_Client_VectorDB.insert_db(all_data)
-    print(Milvus_Client_VectorDB.count_db())
+        }])
+            
+    with VectorDB() as vector_db:
+        print(vector_db.count_db())
 
 
 if __name__ == "__main__":
-    check_and_create_directory()
-    if os.path.exists(env.vector_db.VECTOR_CLIENT_NAME):
-        os.remove(env.vector_db.VECTOR_CLIENT_NAME)
-    prepare_images()
+    # check_and_create_directory()
+    # if os.path.exists(env.vector_db.VECTOR_CLIENT_NAME):
+    #     os.remove(env.vector_db.VECTOR_CLIENT_NAME)
+    # prepare_images()
     prepare_vector_db()
