@@ -46,8 +46,8 @@ def prepare_vector_db():
 
 
 if __name__ == "__main__":
-    # check_and_create_directory()
-    # if os.path.exists(env.vector_db.VECTOR_CLIENT_NAME):
-    #     os.remove(env.vector_db.VECTOR_CLIENT_NAME)
+    check_and_create_directory()
+    if os.path.exists(env.vector_db.VECTOR_CLIENT_NAME):
+        os.remove(env.vector_db.VECTOR_CLIENT_NAME)
     prepare_images()
-    # prepare_vector_db()
+    prepare_vector_db()

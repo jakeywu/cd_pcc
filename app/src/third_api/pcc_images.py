@@ -63,8 +63,6 @@ def write_to_directory(records):
             print(i)
         try:
             image_url = record["image_url"]
-            print(image_url)
-            breakpoint()
             response = requests.get(image_url)
 
         except Exception as e:
