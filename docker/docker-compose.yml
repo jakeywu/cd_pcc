@@ -1,0 +1,24 @@
+version: '3.7'  # 使用 Docker Compose 文件版本
+
+services:
+  # Redis 服务配置
+  pcc_redis:
+    image: redis:latest  # 使用最新的 Redis 镜像
+    container_name: pcc-redis-db  # 容器名称
+    restart: always  # 容器总是重启，除非手动停止
+    command: redis-server --requirepass redisTest123  # 通过命令行参数设置密码
+    ports:
+      - "6380:6379"  # 映射本地的 6379 端口到容器的 6379 端口（Redis 默认端口）
+    volumes:
+      - pcc_redis_data:/data  # 数据持久化：将 Redis 数据存储在本地卷中
+    networks:
+      - pcc_backend_network  # 将 Redis 容器加入到定义的后端网络
+
+# 网络配置，定义了一个名为 backend_network 的自定义桥接网络
+networks:
+  pcc_backend_network:
+    driver: bridge  # 使用桥接网络模式，以便容器之间能够互相通信
+
+# 卷配置，定义了持久化数据存储
+volumes:
+  pcc_redis_data:  # 用于 Redis 容器的数据卷

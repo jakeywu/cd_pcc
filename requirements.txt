@@ -1,0 +1,9 @@
+uvicorn==0.32.1
+fastapi==0.115.6
+loguru==0.7.3
+python-multipart==0.0.19
+python-dotenv==1.0.1
+transformers==4.47.0
+torch==2.5.1
+pymilvus==2.5.0
+pillow==11.0.0
