@@ -1,7 +1,7 @@
 import os
 import numpy as np
 from PIL import Image
-from app.src.initial import env, CV_MODEL, VectorDB
+from app.src.initial import env, CV_MODEL, Milvus_Client_VectorDB
 from app.src.third_api.pcc_images import check_and_create_directory, get_pcc_images, write_to_directory
 
 
@@ -26,8 +26,10 @@ def prepare_vector_db():
     """
     all_data = []
     for _id, name in enumerate(os.listdir(env.model.PCC_IMAGE_DIR)):
-        if _id % 10 == 0:
-            print(_id)
+        if (_id + 1) % 10 == 0:
+            print(_id+1)
+        if ".DS_Store" in name:
+            continue
         image_path = os.path.join(env.model.PCC_IMAGE_DIR, name)
         image = Image.open(image_path)
         image_np = np.array(image)
@@ -39,8 +41,8 @@ def prepare_vector_db():
             "vector": features
         })
 
-    with VectorDB() as vector_db:
-        vector_db.insert_db(all_data)
+    Milvus_Client_VectorDB.insert_db(all_data)
+    print(Milvus_Client_VectorDB.count_db())
 
 
 if __name__ == "__main__":
@@ -48,4 +50,4 @@ if __name__ == "__main__":
     # if os.path.exists(env.vector_db.VECTOR_CLIENT_NAME):
     #     os.remove(env.vector_db.VECTOR_CLIENT_NAME)
     prepare_images()
-    prepare_vector_db()
+    # prepare_vector_db()

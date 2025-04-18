@@ -59,16 +59,17 @@ def write_to_directory(records):
     """
     print(len(records))
     for i, record in enumerate(records):
-        if i % 100 == 0:
+        if i % 10 == 0:
             print(i)
         try:
             image_url = record["image_url"]
-            # image_url = image_url.replace("222.209.83.183:9390", "10.10.15.94:19001")
+            print(image_url)
+            breakpoint()
             response = requests.get(image_url)
 
         except Exception as e:
             logger.info(f"{record}下载失败，请重新下载")
             logger.error(e)
             continue
-        with open(os.path.join(env.model.PCC_IMAGE_DIR, f"{record['product_id']}_{i}.png"), 'wb') as w_file:
+        with open(os.path.join(env.model.PCC_IMAGE_DIR, f"{record['product_id']}_{record['filename']}"), 'wb') as w_file:
             w_file.write(response.content)

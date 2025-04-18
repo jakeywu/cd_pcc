@@ -1,0 +1,15 @@
+SERVER_HOST=0.0.0.0
+SERVER_PORT=8083
+
+PCC_PRODUCT_HOST=10.10.15.94
+PCC_PRODUCT_PORT=18000
+PCC_PRODUCT_ROUTE_IMAGE=/api/image_model/get_by_time_range
+
+CV_FEATURE_MODEL_DIR=/Users/littlefish/resources/pcc_model
+PCC_IMAGE_DIR=/Users/littlefish/resources/pcc_images
+VECTOR_CLIENT_NAME=/Users/littlefish/resources/pcc_vector_name/pcc_milvus.db
+VECTOR_SIZE=768
+COLLECTION_NAME=pcc_collection_name
+TOP_K=3
+
+REDIS_PRODUCT_IMAGE_DIR=/Users/littlefish/resources/pcc_subscriber

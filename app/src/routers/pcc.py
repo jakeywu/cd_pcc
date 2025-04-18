@@ -4,7 +4,7 @@ from app.src.settings.c_logger import logger
 from app.src.utils.output import api_output, CustomHTTPException, convert_search_result
 from PIL import Image
 import numpy as np
-from app.src.initial import VectorDB, CV_MODEL
+from app.src.initial import Milvus_Client_VectorDB, CV_MODEL
 
 
 pcc_router = APIRouter()
@@ -32,8 +32,8 @@ async def extract_feature(file: UploadFile = File(...)):
             image_np = image_np[..., :3]  # 去掉 alpha 通道
 
         features = CV_MODEL.predict(image_np)
-        with VectorDB() as vector_db:
-            search_result = vector_db.search_db([features])[0]
+        
+        search_result = Milvus_Client_VectorDB.search_db([features])[0]
         final_result = convert_search_result(search_result)
         return api_output(data=final_result)
     except Exception as e:

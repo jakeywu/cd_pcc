@@ -38,16 +38,24 @@ class VectorDB(object):
             limit=env.vector_db.TOP_K,
             output_fields=["product_id"]
         )
+    
+    def count_db(self):
+        """
+        return number of entities in the collection
+        """
+        stats = self.client.get_collection_stats(env.vector_db.COLLECTION_NAME)
+        return int(stats["row_count"])
 
-    def __enter__(self):
-        """
-        Enter the context and return the current instance.
-        """
-        return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
-        """
-        Close the connection when exiting the context.
-        """
-        if hasattr(self, 'client'):
-            self.client.close()  # Close the connection
+    # def __enter__(self):
+    #     """
+    #     Enter the context and return the current instance.
+    #     """
+    #     return self
+
+    # def __exit__(self, exc_type, exc_value, traceback):
+    #     """
+    #     Close the connection when exiting the context.
+    #     """
+    #     if hasattr(self, 'client'):
+    #         self.client.close()  # Close the connection

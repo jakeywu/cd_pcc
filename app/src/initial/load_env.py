@@ -48,6 +48,7 @@ class LoadEnv:
             self.PCC_PRODUCT_HOST = config.get_and_check_variable("PCC_PRODUCT_HOST", str)
             self.PCC_PRODUCT_PORT = config.get_and_check_variable("PCC_PRODUCT_PORT", str)
             self.PCC_PRODUCT_ROUTE_IMAGE = config.get_and_check_variable("PCC_PRODUCT_ROUTE_IMAGE", str)
+            self.REDIS_PRODUCT_IMAGE_DIR = config.get_and_check_variable("REDIS_PRODUCT_IMAGE_DIR", str)
 
     @staticmethod
     def get_and_check_variable(key, cast):
