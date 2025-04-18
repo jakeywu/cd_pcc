@@ -19,9 +19,21 @@ class VectorDB(object):
         schema.add_field("product_id", DataType.VARCHAR, max_length=100)
         schema.add_field("vector", DataType.FLOAT_VECTOR, dim=env.vector_db.VECTOR_SIZE)
 
+        index_params = self.client.prepare_index_params()
+        index_params.add_index(
+            field_name="vector",
+            index_type="HNSW",  # Using HNSW instead of IVF_FLAT for local mode
+            metric_type="L2",   # or "IP" depending on your needs
+            params={
+                "M": 16,       # HNSW specific parameter
+                "efConstruction": 200
+            }
+        )
+
         self.client.create_collection(
             collection_name=env.vector_db.COLLECTION_NAME,
-            schema=schema
+            schema=schema,
+            index_params=index_params
         )
 
     def insert_db(self, data):
@@ -40,11 +52,17 @@ class VectorDB(object):
         :param features:
         :return:
         """
+        search_params = {
+            "metric_type": "L2",  # Must match the metric type used in index creation
+            "params": {"ef": 50}  # HNSW search parameter
+        }
+        
         return self.client.search(
             collection_name=env.vector_db.COLLECTION_NAME,
             data=features,
             limit=env.vector_db.TOP_K,
-            output_fields=["product_id"]
+            output_fields=["product_id"],
+            search_params=search_params
         )
     
     def count_db(self):
@@ -53,17 +71,3 @@ class VectorDB(object):
         """
         stats = self.client.get_collection_stats(env.vector_db.COLLECTION_NAME)
         return int(stats["row_count"])
-
-
-    # def __enter__(self):
-    #     """
-    #     Enter the context and return the current instance.
-    #     """
-    #     return self
-
-    # def __exit__(self, exc_type, exc_value, traceback):
-    #     """
-    #     Close the connection when exiting the context.
-    #     """
-    #     if hasattr(self, 'client'):
-    #         self.client.close()  # Close the connection
