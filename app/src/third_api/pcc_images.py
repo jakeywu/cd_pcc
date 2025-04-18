@@ -59,7 +59,7 @@ def write_to_directory(records):
     """
     print(len(records))
     for i, record in enumerate(records):
-        if i % 10 == 0:
+        if i % 100 == 0:
             print(i)
         try:
             image_url = record["image_url"]

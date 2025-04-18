@@ -5,10 +5,11 @@ PCC_PRODUCT_HOST=10.10.15.94
 PCC_PRODUCT_PORT=18000
 PCC_PRODUCT_ROUTE_IMAGE=/api/image_model/get_by_time_range
 
-CV_FEATURE_MODEL_DIR=/root/resources/image_feature_extraction/pcc
-PCC_IMAGE_DIR=/root/resources/products/pcc
-
-VECTOR_CLIENT_NAME=/root/resources/products/pcc_milvus.db
+CV_FEATURE_MODEL_DIR=/root/resources/pcc_model
+PCC_IMAGE_DIR=/root/resources/pcc_images
+VECTOR_CLIENT_NAME=/root/resources/pcc_vector_name/pcc_milvus.db
 VECTOR_SIZE=768
 COLLECTION_NAME=pcc_collection_name
 TOP_K=3
+
+REDIS_PRODUCT_IMAGE_DIR=/root/resources/pcc_subscriber
