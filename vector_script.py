@@ -1,7 +1,7 @@
 import os
 import numpy as np
 from PIL import Image
-from app.src.initial import env, CV_MODEL, VectorDB
+from app.src.initial import env, CV_MODEL, Milvus_Client_VectorDB
 from app.src.third_api.pcc_images import check_and_create_directory, get_pcc_images, write_to_directory
 
 
@@ -34,16 +34,14 @@ def prepare_vector_db():
         image_np = np.array(image)
         features = CV_MODEL.predict(image_np)
         product_id = name.split("_")[0]
-        
-        with VectorDB() as vector_db:
-            vector_db.insert_db([{
-            "id": _id,
-            "product_id": product_id,
-            "vector": features
-        }])
-            
-    with VectorDB() as vector_db:
-        print(vector_db.count_db())
+        Milvus_Client_VectorDB.insert_db([
+            {
+                "id": _id,
+                "product_id": product_id,
+                "vector": features
+            }
+        ])
+    print(Milvus_Client_VectorDB.count_db())
 
 
 if __name__ == "__main__":
