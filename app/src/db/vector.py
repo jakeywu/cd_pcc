@@ -11,10 +11,12 @@ class VectorDB(object):
         self.__init_collection()
 
     def __init_collection(self):
-        self.client.create_collection(
-            collection_name=env.vector_db.COLLECTION_NAME,
-            dimension=env.vector_db.VECTOR_SIZE
-        )
+        # Check if collection already exists
+        if env.vector_db.COLLECTION_NAME not in self.client.list_collections():
+            self.client.create_collection(
+                collection_name=env.vector_db.COLLECTION_NAME,
+                dimension=env.vector_db.VECTOR_SIZE
+            )
 
     def insert_db(self, data):
         """
