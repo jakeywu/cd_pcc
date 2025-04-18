@@ -1,4 +1,4 @@
-from pymilvus import MilvusClient
+from pymilvus import MilvusClient, DataType
 from app.src.initial import env
 
 
@@ -11,9 +11,17 @@ class VectorDB(object):
         self.__init_collection()
 
     def __init_collection(self):
+        schema = MilvusClient.create_schema(
+            auto_id=False,
+            enable_dynamic_field=False
+        )
+        schema.add_field("id", DataType.INT64, is_primary=True)
+        schema.add_field("product_id", DataType.VARCHAR, max_length=100)
+        schema.add_field("vector", DataType.FLOAT_VECTOR, dim=env.vector_db.VECTOR_SIZE)
+
         self.client.create_collection(
             collection_name=env.vector_db.COLLECTION_NAME,
-            dimension=env.vector_db.VECTOR_SIZE
+            schema=schema
         )
 
     def insert_db(self, data):
