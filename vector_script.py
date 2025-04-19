@@ -24,9 +24,9 @@ def prepare_vector_db():
     prepare vector db
     :return:
     """
+
     for _id, name in enumerate(os.listdir(env.model.PCC_IMAGE_DIR)):
-        if (_id + 1) % 10 == 0:
-            print(_id+1)
+        print(f"{_id}/{len(os.listdir(env.model.PCC_IMAGE_DIR))}")
         if ".DS_Store" in name:
             continue
         image_path = os.path.join(env.model.PCC_IMAGE_DIR, name)
@@ -41,7 +41,6 @@ def prepare_vector_db():
                 "vector": features
             }
         ])
-    print(Milvus_Client_VectorDB.count_db())
 
 
 if __name__ == "__main__":

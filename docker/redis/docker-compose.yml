@@ -22,3 +22,4 @@ networks:
 # 卷配置，定义了持久化数据存储
 volumes:
   pcc_redis_data:  # 用于 Redis 容器的数据卷
+
