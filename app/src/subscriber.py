@@ -28,7 +28,7 @@ def subscribe_image(image_url, save_dir):
     save_path = os.path.join(save_dir, filename)
     with open(save_path, 'wb') as f:
         f.write(response.content)
-    logging.info(f"图片已保存到: {save_path}")
+    print(f"图片已保存到: {save_path}")
     
     # 用 PIL 打开图片并转换为 RGB
     image = Image.open(BytesIO(response.content)).convert("RGB")
@@ -43,7 +43,7 @@ def sub_main():
     # 创建保存图片的目录
     save_dir = env.product.REDIS_PRODUCT_IMAGE_DIR
     os.makedirs(save_dir, exist_ok=True)
-    logging.info(f"图片将保存到目录: {save_dir}")
+    print(f"图片将保存到目录: {save_dir}")
 
     # 连接 Redis 服务器
     r = redis.StrictRedis(
@@ -73,7 +73,7 @@ def sub_main():
             # 记录图片URL信息
             file_ext = os.path.splitext(image_url.split('?')[0])[1].lower()
             print(file_ext)
-            logging.info(f"处理图片: {product_id}, 格式: {file_ext}")
+            print(f"处理图片: {product_id}, 格式: {file_ext}")
             vector = subscribe_image(image_url, save_dir)
             Milvus_Client_VectorDB.insert_db([{"id": start_id, "vector": vector, "product_id": product_id}])
             print(f"✅ 成功处理图片: {product_id}, 格式: {file_ext}")
