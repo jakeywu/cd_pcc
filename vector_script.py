@@ -26,7 +26,7 @@ def prepare_vector_db():
     :return:
     """
     
-    for _id, name in enumerate(os.listdir(env.model.PCC_IMAGE_DIR)[0:10]):
+    for _id, name in enumerate(os.listdir(env.model.PCC_IMAGE_DIR)):
         try:
             print(_id)
             if ".DS_Store" in name:
