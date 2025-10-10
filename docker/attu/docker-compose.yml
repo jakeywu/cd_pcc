@@ -1,0 +1,17 @@
+version: '3.5'
+
+services:
+  # Attu 可视化管理界面
+  attu:
+    image: zilliz/attu:latest
+    container_name: milvus-attu
+    ports:
+      - "8000:3000"  # 浏览器访问端口
+    environment:
+      MILVUS_URL: standalone:19530  # 指向 Milvus 服务
+    networks:
+      - milvus  # 连接到已存在的 milvus 网络
+
+networks:
+  milvus:
+    external: true  # 使用已存在的网络

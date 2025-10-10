@@ -4,7 +4,8 @@ from app.src.settings.c_logger import logger
 from app.src.utils.output import api_output, CustomHTTPException, convert_search_result
 from PIL import Image
 import numpy as np
-from app.src.initial import CV_MODEL, Milvus_Client_VectorDB
+from app.src.initial import CV_MODEL
+from app.src.db.vector import Milvus_Client_VectorDB
 
 
 pcc_router = APIRouter()
@@ -22,6 +23,7 @@ async def extract_feature(file: UploadFile = File(...)):
         if file.content_type not in ["image/jpeg", "image/png"]:
             raise CustomHTTPException(message="Unsupported file type. Please upload a JPEG or PNG image.")
 
+        breakpoint()
         # 读取文件内容并转为 NumPy 数组
         image_bytes = await file.read()
         image = Image.open(io.BytesIO(image_bytes))
@@ -39,24 +41,24 @@ async def extract_feature(file: UploadFile = File(...)):
         raise CustomHTTPException(message=f"Error processing image: {str(e)}")
 
 
-# 需要登录后才能访问的接口
-@pcc_router.post("/quality_check")
-async def image_quality_check(image: UploadFile = File(...)):
-    try:
-        contents = await image.read()
-        logger.info(image.content_type)
-        return api_output(data=True)
-    except Exception as e:
-        raise CustomHTTPException(code=500, message=f"Error reading image: {str(e)}")
+# # 需要登录后才能访问的接口
+# @pcc_router.post("/quality_check")
+# async def image_quality_check(image: UploadFile = File(...)):
+#     try:
+#         contents = await image.read()
+#         logger.info(image.content_type)
+#         return api_output(data=True)
+#     except Exception as e:
+#         raise CustomHTTPException(code=500, message=f"Error reading image: {str(e)}")
 
 
 
-# 需要登录后才能访问的接口
-@pcc_router.post("/sync_images")
-async def synchronize_images(image: UploadFile = File(...)):
-    try:
-        contents = await image.read()
-        logger.info(image.content_type)
-        return api_output(data=True)
-    except Exception as e:
-        raise CustomHTTPException(code=500, message=f"Error reading image: {str(e)}")
+# # 需要登录后才能访问的接口
+# @pcc_router.post("/sync_images")
+# async def synchronize_images(image: UploadFile = File(...)):
+#     try:
+#         contents = await image.read()
+#         logger.info(image.content_type)
+#         return api_output(data=True)
+#     except Exception as e:
+#         raise CustomHTTPException(code=500, message=f"Error reading image: {str(e)}")

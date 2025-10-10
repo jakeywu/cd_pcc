@@ -59,15 +59,14 @@ def write_to_directory(records):
     """
     print(len(records))
     for i, record in enumerate(records):
-        if i % 100 == 0:
-            print(i)
+        print(i)
         try:
             image_url = record["image_url"]
             response = requests.get(image_url)
 
         except Exception as e:
             logger.info(f"{record}下载失败，请重新下载")
-            logger.error(e)
+            print(e, record)
             continue
         with open(os.path.join(env.model.PCC_IMAGE_DIR, f"{record['product_id']}_{record['filename']}"), 'wb') as w_file:
             w_file.write(response.content)

@@ -2,7 +2,8 @@ import redis
 import requests
 from PIL import Image
 from io import BytesIO
-from app.src.initial import CV_MODEL, Milvus_Client_VectorDB
+from app.src.initial import CV_MODEL
+from app.src.db.vector import Milvus_Client_VectorDB
 import numpy as np 
 import logging
 import json
